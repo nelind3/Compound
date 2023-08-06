@@ -1,0 +1,17 @@
+[package]
+name = "compound"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+iced = { version = "0.9.0", features = ["image", "svg"] }
+image = { version = "0.24.6", default-features = false, features = ["png"] }
+
+rfd = { version = "0.11.4", default-features = false, features = ["xdg-portal"] }
+quartz_nbt = { version = "0.2.7", features = ["preserve_order"] }
+
+anyhow = "1.0.71"
+log = "0.4.17"
+simplelog = "0.12.1"
