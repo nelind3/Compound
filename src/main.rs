@@ -11,7 +11,7 @@ mod gui;
 mod nbt;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    simplelog::SimpleLogger::init(log::LevelFilter::Warn, Default::default())?;
+    tracing_subscriber::fmt::init();
     <gui::State as Application>::run(settings())?;
     Ok(())
 }
