@@ -31,7 +31,8 @@ fn nbt_file_view(state: &super::State) -> w::Scrollable<'_, Message, Renderer> {
                     quartz_nbt::NbtTag::Byte(2)
                 )),
                 w::button("Save file").on_press(Message::SaveFile),
-                w::text(&nbtfile.roottag.to_pretty_snbt())
+                w::button("Close file").on_press(Message::CloseFile),
+                w::text(&nbtfile.roottag.0.to_pretty_snbt())
             ]
         } else {
             w::column![w::text("Open a file first!")]

@@ -16,14 +16,6 @@ impl Application for State {
     type Theme = iced::Theme;
     type Message = update::Message;
 
-    fn title(&self) -> String {
-        String::from("Compound")
-    }
-
-    fn theme(&self) -> Self::Theme {
-        self.current_theme.clone()
-    }
-
     fn new(_flags: Self::Flags) -> (Self, Command<Self::Message>) {
         (
             State {
@@ -34,11 +26,19 @@ impl Application for State {
         )
     }
 
+    fn title(&self) -> String {
+        String::from("Compound")
+    }
+
     fn view(&self) -> iced::Element<'_, Self::Message> {
         view::view(self)
     }
 
     fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
         update::update(self, message)
+    }
+
+    fn theme(&self) -> Self::Theme {
+        self.current_theme.clone()
     }
 }

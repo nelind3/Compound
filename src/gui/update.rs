@@ -1,5 +1,5 @@
 use iced::Command;
-use quartz_nbt::{io::Flavor, NbtTag};
+use quartz_nbt::NbtTag;
 use rfd::AsyncFileDialog;
 
 use crate::nbt::NbtFile;
@@ -11,6 +11,7 @@ pub enum Message {
     SaveFile,
     UpdateNBTView(NbtFile),
     SetTag(String, NbtTag),
+    CloseFile,
 }
 
 pub fn update(state: &mut super::State, message: Message) -> Command<Message> {
@@ -52,6 +53,12 @@ pub fn update(state: &mut super::State, message: Message) -> Command<Message> {
 
             Command::none()
         }
+
+        Message::CloseFile => {
+            state.nbtfile = None;
+
+            Command::none()
+        }
     }
 }
 
@@ -59,14 +66,14 @@ fn open_file() -> Command<Message> {
     Command::perform(
         async {
             let Some(handle) = AsyncFileDialog::new()
-                .add_filter("NBT file", &["dat"])
+                .add_filter("NBT file", &["dat", "nbt"])
                 .pick_file()
                 .await
             else {
                 return None;
             };
 
-            match NbtFile::new(handle.path().to_path_buf(), Flavor::GzCompressed).await {
+            match NbtFile::new(handle.path().to_path_buf()).await {
                 Ok(nbtfile) => Some(nbtfile),
                 Err(err) => {
                     log::error!("{}", err);
@@ -75,8 +82,8 @@ fn open_file() -> Command<Message> {
             }
         },
         |optfile| {
-            if let Some(nbt) = optfile {
-                Message::UpdateNBTView(nbt)
+            if let Some(nbtfile) = optfile {
+                Message::UpdateNBTView(nbtfile)
             } else {
                 Message::FileOpenFailed
             }
